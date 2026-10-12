@@ -1,0 +1,497 @@
+{
+  "info": {
+    "name": "Maison Laurel — Restaurant API",
+    "description": "Complete test collection for the Restaurant Management System REST API.\n\nImport this file into Postman or Thunder Client.\n\nBase URL: http://localhost:5000/api\n\nRun requests in the order shown to test the full workflow:\n1. Health check\n2. Get categories and menu items\n3. Create an order\n4. Update order status\n5. Admin operations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "createdOrderId",
+      "value": "",
+      "type": "string",
+      "description": "Automatically set after creating an order"
+    },
+    {
+      "key": "createdItemId",
+      "value": "",
+      "type": "string",
+      "description": "Automatically set after creating a menu item"
+    }
+  ],
+  "item": [
+    {
+      "name": "🩺 Health Check",
+      "item": [
+        {
+          "name": "API Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health",
+            "description": "Verify the API server is running and reachable."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success is true', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "📂 Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categories",
+            "description": "Returns all menu categories ordered by sort_order."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categories/1",
+            "description": "Returns a single category. Change 1 to any valid ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category — Not Found",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categories/9999",
+            "description": "Should return 404 with a descriptive error."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/categories",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Specials\",\n  \"description\": \"Daily chef specials\",\n  \"sort_order\": 8\n}"
+            },
+            "description": "Creates a new category. Returns 400 if name is missing."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category — Missing Name (Validation Test)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/categories",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"No name provided — should fail\"\n}"
+            },
+            "description": "Expects a 400 validation error."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/categories/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description for Starters\",\n  \"sort_order\": 1\n}"
+            },
+            "description": "Partial update — only sends fields that should change."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/categories/8",
+            "description": "Deletes a category. Will fail with a 400 if menu items still reference it (foreign key constraint)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🍽 Menu Items",
+      "item": [
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/menu-items",
+            "description": "Returns all menu items with their category name."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Items — Filter by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/menu-items?category_id=4",
+              "query": [{ "key": "category_id", "value": "4", "description": "ID of 'Mains' category" }]
+            },
+            "description": "Returns only items in category 4 (Mains)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Items — Available Only",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/menu-items?available=true",
+              "query": [{ "key": "available", "value": "true" }]
+            },
+            "description": "Returns only items currently available."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Items — Featured Only",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/menu-items?featured=true",
+              "query": [{ "key": "featured", "value": "true" }]
+            },
+            "description": "Returns only featured items (shown on the homepage)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Items — Multiple Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/menu-items?category_id=4&available=true",
+              "query": [
+                { "key": "category_id", "value": "4" },
+                { "key": "available", "value": "true" }
+              ]
+            },
+            "description": "Combines filters: available items in Mains category."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Item by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/menu-items/1",
+            "description": "Returns a single menu item with category info."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Menu Item",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/menu-items",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 4,\n  \"name\": \"Test Dish\",\n  \"description\": \"A test dish for API verification\",\n  \"price\": 18.50,\n  \"image_url\": \"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600\",\n  \"is_available\": true,\n  \"is_featured\": false\n}"
+            },
+            "description": "Creates a new menu item. category_id, name, and price are required."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('createdItemId', body.data.id);",
+                  "  console.log('Created item ID:', body.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Menu Item — Validation Test (missing price)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/menu-items",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 4,\n  \"name\": \"Incomplete Item\"\n}"
+            },
+            "description": "Missing price — expects a 400 validation error."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Menu Item (toggle availability)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/menu-items/{{createdItemId}}",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_available\": false,\n  \"price\": 19.00\n}"
+            },
+            "description": "Uses the ID stored by the Create request. Partial update."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Menu Item",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/menu-items/{{createdItemId}}",
+            "description": "Deletes the item created above. Will fail if the item is referenced in an existing order."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📋 Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders",
+            "description": "Returns all orders with a summary (item count, table number)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders — Filter by Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/orders?status=pending",
+              "query": [{ "key": "status", "value": "pending" }]
+            },
+            "description": "Valid statuses: pending, confirmed, preparing, ready, served, cancelled"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders — Filter by Table",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/orders?table_id=3",
+              "query": [{ "key": "table_id", "value": "3" }]
+            },
+            "description": "Returns all orders for table 3."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Stats (Admin Dashboard)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders/stats",
+            "description": "Returns counts by status and total revenue. Used by the admin dashboard."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order by ID (with line items)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders/1",
+            "description": "Returns the full order including all line items, item names, and subtotals."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order — Full Example",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/orders",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Test Customer\",\n  \"table_id\": 3,\n  \"notes\": \"No onions please\",\n  \"items\": [\n    { \"menu_item_id\": 1, \"quantity\": 2 },\n    { \"menu_item_id\": 9, \"quantity\": 1, \"notes\": \"Medium rare\" },\n    { \"menu_item_id\": 18, \"quantity\": 1 }\n  ]\n}"
+            },
+            "description": "Creates a new order in a single database transaction. Prices are snapshotted from the menu."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('createdOrderId', body.data.id);",
+                  "  console.log('Created order ID:', body.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Order — Takeout (no table)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/orders",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Takeout Customer\",\n  \"items\": [\n    { \"menu_item_id\": 19, \"quantity\": 2 },\n    { \"menu_item_id\": 27, \"quantity\": 2 }\n  ]\n}"
+            },
+            "description": "Table ID is optional — useful for takeout or delivery orders."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order — Validation (no items)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/orders",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Empty Order Test\",\n  \"items\": []\n}"
+            },
+            "description": "Expects 400 — an order must have at least one item."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order — Validation (invalid menu item)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/orders",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"menu_item_id\": 99999, \"quantity\": 1 }\n  ]\n}"
+            },
+            "description": "Expects 400 — menu item 99999 does not exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status → confirmed",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/orders/{{createdOrderId}}/status",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "description": "Updates status of the order created above."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status → preparing",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/orders/{{createdOrderId}}/status",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"preparing\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status — Invalid Status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/orders/{{createdOrderId}}/status",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"flying\"\n}"
+            },
+            "description": "Expects 400 — 'flying' is not a valid status."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/orders/{{createdOrderId}}",
+            "description": "Deletes the order created above. Order items are cascade-deleted automatically."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🪑 Tables",
+      "item": [
+        {
+          "name": "Get All Tables",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tables",
+            "description": "Returns all restaurant tables ordered by number."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

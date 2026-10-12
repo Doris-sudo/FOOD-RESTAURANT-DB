@@ -1,0 +1,22 @@
+# ── Dependencies ──────────────────────────────────────────────
+node_modules/
+
+# ── Environment variables (never commit real secrets) ─────────
+.env
+.env.local
+.env.production
+
+# .env.example is intentionally NOT ignored — it documents
+# the required variables without exposing real values.
+# Uncomment the line below only if you do NOT want it committed:
+# .env.example
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# ── Runtime ───────────────────────────────────────────────────
+pids/
+*.pid

@@ -1,0 +1,211 @@
+.header {
+  background-color: var(--espresso);
+  padding: 2.5rem 0;
+}
+
+.header h1 { color: var(--cream); }
+.header p  { color: var(--cream-dark); opacity: 0.7; margin-top: 0.35rem; }
+
+/* Stat cards */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.statCard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--espresso-light);
+  opacity: 0.6;
+  margin-bottom: 0.4rem;
+}
+
+.statValue {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--espresso);
+  line-height: 1;
+}
+
+.statValueAccent { color: var(--burgundy); }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--espresso-light);
+  opacity: 0.65;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--espresso);
+  opacity: 1;
+}
+
+.tabActive {
+  color: var(--burgundy);
+  border-bottom-color: var(--burgundy);
+  opacity: 1;
+}
+
+/* Section actions bar */
+.sectionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Admin table */
+.tableWrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--espresso-light);
+  opacity: 0.6;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--espresso);
+  vertical-align: middle;
+}
+
+.table tr:last-child td { border-bottom: none; }
+
+.table tr:hover td { background: var(--cream); }
+
+.itemName { font-weight: 600; }
+.itemDesc {
+  font-size: 0.8rem;
+  color: var(--espresso-light);
+  opacity: 0.65;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.dotOn  { background: #22c55e; }
+.dotOff { background: var(--border); }
+
+.actionBtns {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Inline form for adding/editing */
+.formPanel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.formPanel h3 {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.formGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.25rem;
+}
+
+.formGrid3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0 1.25rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+/* Pagination / count */
+.tableFooter {
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--espresso-light);
+  opacity: 0.6;
+}
+
+@media (max-width: 1100px) {
+  .statsGrid { grid-template-columns: repeat(3, 1fr); }
+  .formGrid3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+  .formGrid2, .formGrid3 { grid-template-columns: 1fr; }
+  .tabs { overflow-x: auto; }
+  .table th, .table td { padding: 0.75rem 0.85rem; }
+}
+@media (max-width: 400px) {
+  .statsGrid { grid-template-columns: 1fr; }
+}

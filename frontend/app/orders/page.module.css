@@ -1,0 +1,80 @@
+.header {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 0;
+}
+
+.headerInner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.body {
+  padding: 2.5rem 0 4rem;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--espresso-light);
+  white-space: nowrap;
+}
+
+.filterBtn {
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--espresso-light);
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.filterBtn:hover {
+  border-color: var(--burgundy);
+  color: var(--burgundy);
+}
+
+.filterActive {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.filterActive:hover {
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
+  color: var(--white);
+}
+
+.count {
+  font-size: 0.875rem;
+  color: var(--espresso-light);
+  opacity: 0.65;
+  margin-top: 0.35rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .filters { gap: 0.5rem; }
+}

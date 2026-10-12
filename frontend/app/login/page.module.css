@@ -1,0 +1,116 @@
+.page {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--cream);
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logoName {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--mahogany);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.logoSub {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--terracotta);
+  font-weight: 600;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--espresso-light);
+  opacity: 0.75;
+  margin-bottom: 2rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.75rem 0;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--espresso-light);
+  opacity: 0.75;
+  margin-top: 1.5rem;
+}
+
+.footer a {
+  color: var(--mahogany);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.15s;
+}
+
+.footer a:hover {
+  text-decoration-color: var(--mahogany);
+}
+
+.showBtn {
+  background: none;
+  border: none;
+  padding: 0 0.25rem;
+  color: var(--espresso-light);
+  opacity: 0.55;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: opacity 0.15s;
+}
+.showBtn:hover { opacity: 1; }
+
+.inputWrap {
+  position: relative;
+}
+
+.inputWrap .form-input {
+  padding-right: 2.5rem;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--espresso-light);
+  opacity: 0.5;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+.eyeBtn:hover { opacity: 1; }
