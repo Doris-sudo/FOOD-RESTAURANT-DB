@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && node scripts/copyStandalone.js",
+    "start": "node .next/standalone/server.js",
+    "start:next": "next start",
     "lint": "next lint"
   },
   "dependencies": {
