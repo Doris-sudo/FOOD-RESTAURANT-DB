@@ -303,3 +303,5 @@ npm start           # serves the production build
 ```
 
 For a real deployment, use a process manager like **PM2** for the backend and **Vercel** or a Node.js host for the frontend.
+#   R E S T A U R A N T - D B 2  
+ 
